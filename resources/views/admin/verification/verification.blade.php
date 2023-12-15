@@ -241,7 +241,7 @@
                                     <tr>
                                         <td>
                                             <p class="fw-light mb-0">{{ date('d/M/Y', strtotime($truck->created_at)) }}</p>
-                                            <p class="fw-light">{{ date('h:i', strtotime($truck->created_at)) }}</p>
+                                            <p class="fw-light">{{ date('H:i', strtotime($truck->created_at)) }}</p>
                                         </td>
                                         <td>
                                             <p class="fw-light">{{ $truck->plat_nomor }}</p>
