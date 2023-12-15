@@ -207,29 +207,34 @@
             <div class="p-3">
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <form id="scanForm" method="POST" action="{{ url('/proses/scan') }}">
-                            @csrf
-                            <div class="rounded" style="background-color: #dee2e6;">
-                                <div class="w-100" id="my_camera"></div>
-                            </div>
-                            <div class="rounded mt-3"  id="cropper-container" style="overflow: hidden; background-color: #dee2e6; display: none;">
-                                <img id="cropper-image" src="" class="w-100 h-100">
-                            </div>
-                            <input type="hidden" name="image" id="image-tag" class="image-tag">
-                            <div>
-                                <button type="button" class="btn btn-info mt-3 w-100" value="Take Snapshot"
-                                    onClick="takeSnapshot()">
-                                    <span class="tf-icons bx bxs-camera me-2"></span>
-                                    Take Picture
-                                </button>
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-primary mt-3 w-100" onClick="scan()">
-                                    <span class="tf-icons bx bxs-send me-2"></span>
-                                    Scan Number Plate
-                                </button>
-                            </div>
-                        </form>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Number Plate Scaner</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="scanForm" method="POST" action="{{ url('/proses/scan') }}">
+                                @csrf
+                                <div class="rounded" style="background-color: #dee2e6;">
+                                    <div class="w-100" id="my_camera"></div>
+                                </div>
+                                <div class="rounded mt-3"  id="cropper-container" style="overflow: hidden; background-color: #dee2e6; display: none;">
+                                    <img id="cropper-image" src="" class="w-100 h-100">
+                                </div>
+                                <input type="hidden" name="image" id="image-tag" class="image-tag">
+                                <div>
+                                    <button type="button" class="btn btn-info mt-3 w-100" value="Take Snapshot"
+                                        onClick="takeSnapshot()">
+                                        <span class="tf-icons bx bxs-camera me-2"></span>
+                                        Take Picture
+                                    </button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary mt-3 w-100" onClick="scan()">
+                                        <span class="tf-icons bx bxs-send me-2"></span>
+                                        Scan Number Plate
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card-header d-flex justify-content-between align-items-center">
