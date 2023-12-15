@@ -24,8 +24,8 @@ use App\Http\Controllers\VerificationController;
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [AuthController::class,'index'])->name('login');
     Route::post('login_action', [AuthController::class,'login_action']);
-    Route::get('/signup', [AuthController::class,'signup']);
-    Route::post('signup_action', [AuthController::class,'signup_action']);
+    Route::get('/register', [AuthController::class,'register']);
+    Route::post('register_action', [AuthController::class,'register_action']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -48,4 +48,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recap', [RecapController::class,'index']);
     
     Route::get('/user', [UserController::class,'index']);
+    Route::post('/user/register', [UserController::class,'register_action']);
 });

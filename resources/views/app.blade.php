@@ -49,7 +49,7 @@
 
 <body>
     @if (session('success'))        
-        <div class="position-absolute top-0 mt-4 end-0 me-4" style="z-index: 2000;">
+        <div class="position-absolute top-0 mt-4 end-0 me-4" style="z-index: 2000;" id="success-alert">
             <div class="alert alert-success d-flex" role="alert">
                 <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2"><i
                         class="bx bx-check fs-6"></i></span>
@@ -62,7 +62,7 @@
     @endif
     @if ($errors->any())
         @foreach ($errors->all() as $err)
-            <div class="position-absolute top-0 mt-4 end-0 me-4" style="z-index: 2000;">
+            <div class="position-absolute top-0 mt-4 end-0 me-4" style="z-index: 2000;" id="error-alert">
                 <div class="alert alert-danger d-flex" role="alert">
                     <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2"><i
                             class="bx bxs-bell-ring fs-6"></i></span>
@@ -140,6 +140,16 @@
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        setTimeout(function() {
+            document.getElementById('success-alert').style.display = 'none';
+        }, 5000);
+        setTimeout(function() {
+            document.getElementById('error-alert').style.display = 'none';
+        }, 5000);
+    </script>
+
     @yield('js')
 
     <!-- Place this tag in your head or just before your close body tag. -->

@@ -54,16 +54,16 @@ class AuthController extends Controller
         }
     }
 
-    public function signup()
+    public function register()
     {
-        return view('guest.signup',);
+        return view('guest.register',);
     }
 
-    public function signup_action(Request $request)
+    public function register_action(Request $request)
     {
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|unique:petugas',
+            'username' => 'required|unique:users',
             'password' => 'required',
             'konfirmasi_password' => 'required|same:password',
         ]);

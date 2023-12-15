@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Digital Scale | Login</title>
+    <title>Digital Scale | Register</title>
     <meta name="description" content="" />
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
@@ -132,36 +132,42 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <form id="formAuthentication" class="mb-3" method="POST"
-                            action="{{ url('login_action') }}">
+                        <h4 class="mb-2">Adventure starts here 🚀</h4>
+                        <p class="mb-4">Make your account and start monitoring !</p>
+                        <form action="{{ url('register_action') }}" method="POST">
                             @csrf
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                    placeholder="Enter your username" autofocus />
-                            </div>
-                            <div class="mb-3 form-password-toggle">
-                                <div class="d-flex justify-content-between">
-                                    <label class="form-label" for="password">Password</label>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="nameSmall" class="form-label">Name<span class="text-danger ms-1">*</label>
+                                    <input type="text" id="nama" name="nama" class="form-control" placeholder="Enter Name" required>
                                 </div>
-                                <div class="input-group input-group-merge">
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-label" for="username">Username<span class="text-danger ms-1">*</label>
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="Enter Username" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="password" class="form-label">Password<span class="text-danger ms-1">*</label>
                                     <input type="password" id="password" class="form-control" name="password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="password_confirmation" class="form-label">Password Confirmation<span class="text-danger ms-1">*</label>
+                                    <input type="password" class="form-control" name="konfirmasi_password"
+                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add Account</button>
                         </form>
-
-                        <p class="text-center">
-                            <span>New on our platform?</span>
-                            <a href="{{ url('/register') }}">
-                                <span>Create an account</span>
+                        <p class="text-center mt-4">
+                            <span>Already have account ?</span>
+                            <a href="{{ url('/') }}">
+                                <span>Log In</span>
                             </a>
                         </p>
                     </div>

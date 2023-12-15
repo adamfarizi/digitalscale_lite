@@ -51,8 +51,7 @@
                 <span class="app-brand-text demo menu-text fw-bold ms-2">Digital Scale</span>
             </a>
 
-            <a href="javascript:void(0);"
-                class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
                 <i class="bx bx-chevron-left bx-sm align-middle"></i>
             </a>
         </div>
@@ -204,24 +203,31 @@
         <div class="card">
             <div class="card-header pb-0">
                 <div class="row">
-                    <div class="col d-flex">
+                    <div class="col-md-2 ">
                         <h4 class="card-title">Table Users</h4>
                     </div>
-                    <div class="col-md-3 col-sm-6 ml-auto">
+                    <div class="col-md-3 offset-md-5">
                         <div class="input-group mb-3 border rounded-2">
-                            <span class="input-group-text border-none text-body me-2"><i class="fas fa-search" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control border-none ms-2" id="searchInput_semua" placeholder="Cari ...">
+                            <span class="input-group-text border-none text-body me-2"><i class="fas fa-search"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control border-none ms-2" id="searchInput_semua"
+                                placeholder="Cari ...">
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary me-2 text-white w-100" data-bs-toggle="modal" data-bs-target="#smallModal">
+                            <span class="tf-icons bx bx-user-plus me-2"></span> Add User
+                        </button>
+                    </div>
                 </div>
-            </div>   
+            </div>
             <div class="card-body" style="min-height: 450px;">
                 <div class="table-responsive text-nowrap px-4" style="max-height: 470px; overflow-y: auto;">
                     <table class="table">
-                        <thead>
+                        <thead class="sticky-top bg-white z-index-1">
                             <tr>
                                 <th>ID</th>
-                                <th>NAMA</th>
+                                <th>NAME</th>
                                 <th>USERNAME</th>
                                 <th>ROLE</th>
                                 <th></th>
@@ -256,18 +262,76 @@
                                     </td>
                                     <td>
                                         <a class="dropdown-item text-primary" href="javascript:void(0);"><i
-                                            class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                class="bx bx-edit-alt me-1"></i> Edit</a>
                                     </td>
                                     <td>
                                         <a class="dropdown-item text-danger" href="javascript:void(0);"><i
-                                            class="bx bx-trash me-1"></i> Delete</a>
+                                                class="bx bx-trash me-1"></i> Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>         
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold mb-0" id="exampleModalLabel2">Add User Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url('/user/register') }}" method="POST">
+                    @csrf
+                    <div class="modal-body mt-0 pt-0">
+                        <hr class="fw-light">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameSmall" class="form-label">Name<span class="text-danger ms-1">*</label>
+                                <input type="text" id="nama" name="nama" class="form-control" placeholder="Enter Name" required>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col mb-3">
+                                <label class="form-label" for="username">Username<span class="text-danger ms-1">*</label>
+                                <input type="text" name="username" class="form-control" id="username" placeholder="Enter Username" required>
+                            </div>
+                            <div class="col mb-3">
+                                <label for="role" class="form-label">Role<span class="text-danger ms-1">*</label>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="null" selected>None</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="petugas">Petugas</option>
+                                    <option value="koordinator">Koordinator</option>
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="owner">Owner</option>
+                                </select>                        
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="password" class="form-label">Password<span class="text-danger ms-1">*</label>
+                                <input type="password" id="password" class="form-control" name="password" 
+                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="password_confirmation" class="form-label">Password Confirmation<span class="text-danger ms-1">*</label>
+                                <input type="password" class="form-control" name="konfirmasi_password" 
+                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</a>
+                        <button type="submit" class="btn btn-primary">Add Account</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 @endsection
