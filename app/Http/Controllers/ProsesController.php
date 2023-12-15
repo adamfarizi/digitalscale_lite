@@ -49,34 +49,42 @@ class ProsesController extends Controller
     public function scan_process(Request $request)
     {
         $img = $request->image;
-
+    
         // Folder untuk menyimpan gambar di dalam direktori public
         $folderPath = "uploads/";
-
+    
         // Bagian ini memproses gambar yang diterima
         $image_parts = explode(";base64,", $img);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type = $image_type_aux[1];
         $image_base64 = base64_decode($image_parts[1]);
-
+    
         // Nama unik untuk file gambar
         $fileName = uniqid() . '.png';
-
+    
         // Path relatif gambar di dalam direktori public/uploads
         $fileRelativePath = $folderPath . $fileName;
-
+    
         // Path absolut gambar di dalam direktori public/uploads
         $fileAbsolutePath = public_path($fileRelativePath);
-
+    
         // Simpan gambar di dalam direktori public/uploads
         file_put_contents($fileAbsolutePath, $image_base64);
-
+    
         // Panggil fungsi OCR dengan menggunakan OCR.space API
         $result = $this->performOCR($fileAbsolutePath);
-
+    
         // Tampilkan teks hasil OCR
-        return view('admin.proses.scan', ['image' => $img, 'result' => $result]);
+        if ($result === '') {
+            // Hapus gambar jika hasil OCR kosong
+            unlink($fileAbsolutePath);
+    
+            return back()->withErrors('Scan Again !');
+        } else {
+            return view('admin.proses.scan', ['image' => $img, 'result' => $result]);
+        }
     }
+    
 
     public function performOCR($imagePath)
     {
@@ -93,6 +101,9 @@ class ProsesController extends Controller
                         'name' => 'file',
                         'contents' => fopen($imagePath, 'r'),
                     ],
+                ],
+                'query' => [
+                    'OCREngine' => 3,
                 ],
             ]);
 

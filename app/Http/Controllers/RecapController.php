@@ -14,7 +14,7 @@ class RecapController extends Controller
         })
             ->whereHas('muatan', function ($query) {
                 $query->where('verifikasi_2', 'sudah');
-            })->orderBy('created_at', 'desc')
+            })->orderBy('created_at', 'asc')
             ->get();
 
         return view('admin.recap.recap',[

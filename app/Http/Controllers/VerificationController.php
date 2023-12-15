@@ -12,7 +12,7 @@ class VerificationController extends Controller
     {   
         $truck = Truck::whereHas('muatan', function ($query) {
             $query->where('verifikasi_1', 'belum');
-        })->orderBy('created_at', 'desc')
+        })->orderBy('created_at', 'asc')
         ->get();
     
         return view('admin.verification.verification', [

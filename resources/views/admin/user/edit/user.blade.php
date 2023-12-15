@@ -135,7 +135,9 @@
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 px-0 me-sm-6">
                         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a>
                         </li>
-                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Users</li>
+                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Users</a>
+                        </li>
+                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
                     </ol>
                 </div>
             </div>
@@ -200,196 +202,46 @@
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-header pb-0">
-                <div class="row">
-                    <div class="col-md-2 ">
-                        <h4 class="card-title">Table Users</h4>
-                    </div>
-                    <div class="col-md-3 offset-md-5">
-                        <div class="input-group mb-3 border rounded-2">
-                            <span class="input-group-text border-none text-body"><i class="fas fa-search"
-                                    aria-hidden="true"></i></span>
-                            <input type="text" class="form-control border-none" id="searchInput_semua"
-                                placeholder="Cari ...">
+        <form action="{{ url('/user/edit/' . $user->id_user) }}" method="POST">
+            @csrf
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Edit Data {{ $user->nama }}</h4>
+                </div>
+                <div class="card-body mt-0 pt-0">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameSmall" class="form-label">Name<span class="text-danger ms-1">*</span></label>
+                            <input type="text" id="nama" name="nama" class="form-control" placeholder="Enter Name" value="{{ $user->nama }}" required>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-primary me-2 text-white w-100" data-bs-toggle="modal"
-                            data-bs-target="#modalAdd">
-                            <span class="tf-icons bx bx-user-plus me-2"></span> Add User
-                        </button>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label class="form-label" for="username">Username<span class="text-danger ms-1">*</span></label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter Username" value="{{ $user->username }}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="role" class="form-label">Role<span class="text-danger ms-1">*</span></label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="null" @if($user->role == 'null') selected @endif>None</option>
+                                <option value="Admin" @if($user->role == 'Admin') selected @endif>Admin</option>
+                                <option value="Petugas" @if($user->role == 'Petugas') selected @endif>Petugas</option>
+                                <option value="Koordinator" @if($user->role == 'Koordinator') selected @endif>Koordinator</option>
+                                <option value="Supervisor" @if($user->role == 'Supervisor') selected @endif>Supervisor</option>
+                                <option value="Owner" @if($user->role == 'Owner') selected @endif>Owner</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Add Change</button>
+                            <a href="{{ url('/user') }}" class="text-secondary">Cancel</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="min-height: 450px;">
-                <div class="table-responsive text-nowrap px-4" style="max-height: 470px; overflow-y: auto;">
-                    <table class="table">
-                        <thead class="sticky-top bg-white z-index-1">
-                            <tr>
-                                <th>ID</th>
-                                <th>NAME</th>
-                                <th>USERNAME</th>
-                                <th>ROLE</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>
-                                        <p class="fw-light">{{ $user->id_user }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="fw-light">{{ $user->nama }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="fw-light">{{ $user->username }}</p>
-                                    </td>
-                                    <td>
-                                        @if ($user->role === 'Admin')
-                                            <p>
-                                                <span class="badge bg-label-primary">Admin</span>
-                                            </p>
-                                        @elseif($user->role === 'Petugas')
-                                            <p>
-                                                <span class="badge bg-label-success">Petugas</span>
-                                            </p>
-                                        @elseif($user->role === 'Koordinator')
-                                            <p>
-                                                <span class="badge bg-label-danger">Koordinator</span>
-                                            </p>
-                                        @elseif($user->role === 'Supervisor')
-                                            <p>
-                                                <span class="badge bg-label-warning">Supervisor</span>
-                                            </p>
-                                        @elseif($user->role === 'Owner')
-                                            <p>
-                                                <span class="badge bg-label-info">Owner</span>
-                                            </p>
-                                        @else
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a class="dropdown-item text-primary"
-                                            href="{{ url('user/edit/' . $user->id_user) }}">
-                                            <i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                    </td>
-                                    <td>
-                                        <a type="submit" class="dropdown-item text-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modalDelete{{ $user->id_user }}">
-                                            <i class="bx bx-trash me-1"></i> Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        </form>        
     </div>
-
-    <div class="modal fade" id="modalAdd" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold mb-0" id="exampleModalLabel2">Add User Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ url('/user/register') }}" method="POST">
-                    @csrf
-                    <div class="modal-body mt-0 pt-0">
-                        <hr class="fw-light">
-                        <div class="row">
-                            <div class="col mb-3">
-                                <label for="nameSmall" class="form-label">Name<span class="text-danger ms-1">*</label>
-                                <input type="text" id="nama" name="nama" class="form-control"
-                                    placeholder="Enter Name" required>
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col mb-3">
-                                <label class="form-label" for="username">Username<span class="text-danger ms-1">*</label>
-                                <input type="text" name="username" class="form-control" id="username"
-                                    placeholder="Enter Username" required>
-                            </div>
-                            <div class="col mb-3">
-                                <label for="role" class="form-label">Role<span class="text-danger ms-1">*</label>
-                                <select class="form-select" id="role" name="role" required>
-                                    <option value="null" selected>None</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Petugas">Petugas</option>
-                                    <option value="Koordinator">Koordinator</option>
-                                    <option value="Supervisor">Supervisor</option>
-                                    <option value="Owner">Owner</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-3">
-                                <label for="password" class="form-label">Password<span class="text-danger ms-1">*</label>
-                                <input type="password" id="password" class="form-control" name="password"
-                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-3">
-                                <label for="password_confirmation" class="form-label">Password Confirmation<span
-                                        class="text-danger ms-1">*</label>
-                                <input type="password" class="form-control" name="konfirmasi_password"
-                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</a>
-                        <button type="submit" class="btn btn-primary">Add Account</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    @foreach ($users as $user)
-        <div class="modal fade" id="modalDelete{{ $user->id_user }}"
-            aria-labelledby="modalToggleLabel{{ $user->id_user }}" tabindex="-1" style="display: none;"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24"
-                            style="fill: rgba(255, 62, 29, 1);transform: ;msFilter:;">
-                            <path
-                                d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM12 20c-4.411 0-8-3.589-8-8s3.567-8 7.953-8C16.391 4 20 7.589 20 12s-3.589 8-8 8z">
-                            </path>
-                            <path d="M11 7h2v7h-2zm0 8h2v2h-2z"></path>
-                        </svg>
-                        <h3 class="mt-3">Are you serious about deleting the {{ $user->nama }} account ?</h3>
-                    </div>
-                    <div class="modal-footer row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal"
-                                aria-label="Close">Cancel</button>
-                        </div>
-                        <div class="col">
-                            <form action="{{ url('/user/delete/' . $user->id_user) }}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger w-100" href="">
-                                    <i class="bx bx-trash me-1"></i> Delete
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
 @endsection

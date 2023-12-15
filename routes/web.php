@@ -49,4 +49,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/user', [UserController::class,'index']);
     Route::post('/user/register', [UserController::class,'register_action']);
+    Route::get('/user/edit/{id}', [UserController::class,'edit_user']);
+    Route::post('/user/edit/{id}', [UserController::class,'edit_user_action']);
+    Route::delete('/user/delete/{id}', [UserController::class,'delete_user_action']);
 });

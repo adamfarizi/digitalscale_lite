@@ -209,8 +209,8 @@
                     </div>
                     <div class="col-md-3 col-sm-6 ml-auto">
                         <div class="input-group mb-3 border rounded-2">
-                            <span class="input-group-text border-none text-body me-2"><i class="fas fa-search" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control border-none ms-2" id="searchInput_semua" placeholder="Cari ...">
+                            <span class="input-group-text border-none text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control border-none" id="searchInput_semua" placeholder="Cari ...">
                         </div>
                     </div>
                 </div>
@@ -221,12 +221,12 @@
                         <thead class="sticky-top bg-white z-index-1">
                             <tr>
                                 <th>DATE</th>
-                                <th>NUMBER PLATE</th>
-                                <th>TRUCK TYPES</th>
-                                <th>TYPE OF LOAD</th>
-                                <th>LOADING LOAD</th>
-                                <th>ENTIRE LOAD</th>
-                                <th>VERIFICATION</th>
+                                <th class="text-center">NUMBER PLATE</th>
+                                <th class="text-center">TRUCK TYPES</th>
+                                <th class="text-center">TYPE OF LOAD</th>
+                                <th class="text-center">LOADING LOAD</th>
+                                <th class="text-center">ENTIRE LOAD</th>
+                                <th class="text-center">VERIFICATION</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -244,29 +244,35 @@
                                             <p class="fw-light mb-0">{{ date('d/M/Y', strtotime($truck->created_at)) }}</p>
                                             <p class="fw-light">{{ date('H:i', strtotime($truck->created_at)) }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <p class="fw-light">{{ $truck->plat_nomor }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <p class="fw-light">{{ $truck->jenis_truck }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <p class="fw-light">{{ $truck->muatan->jenis_muatan }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <p class="fw-light">{{ $truck->muatan->berat_muatan }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <p class="fw-light">{{ $truck->muatan->beban_seluruh }}</p>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             @if ($truck->muatan->verifikasi_1 == 'sudah')
-                                                <span class="badge rounded-pill bg-success">Verified</span>
+                                                <p>
+                                                    <span class="tf-icons bx bx-check-circle text-success"></span>
+                                                    <span class="badge rounded-pill bg-success">Verified</span>
+                                                </p>
                                             @else
-                                                <span class="badge rounded-pill bg-danger">Not Verified</span>
+                                                <p>
+                                                    <span class="tf-icons bx bx-x-circle text-danger"></span>
+                                                    <span class="badge rounded-pill bg-danger">Not Verified</span>
+                                                </p>
                                             @endif
                                         </td>
-                                        <td class="p-0">
+                                        <td class="text-center ">
                                             <form method="POST" action="{{ url('/approve/' . $truck->muatan->id_muatan) }}">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-primary">
