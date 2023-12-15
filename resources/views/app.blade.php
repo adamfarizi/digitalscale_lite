@@ -139,6 +139,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     @yield('js')
 
     <!-- Place this tag in your head or just before your close body tag. -->

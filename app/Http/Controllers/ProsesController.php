@@ -6,7 +6,9 @@ use App\Models\Muatan;
 use App\Models\Truck;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ProsesController extends Controller
 {
@@ -14,10 +16,34 @@ class ProsesController extends Controller
     {
         return view('admin.proses.scan');
     }
-    
+
     public function index_manual()
     {
         return view('admin.proses.manual');
+    }
+
+    public function weight_scan()
+    {
+        $channelId = '2381166';
+        $apiKey = '8C53S6YGVJYE97PK';
+        $fieldId = 1; // sesuaikan dengan field yang Anda ingin ambil
+
+        $response = Http::get("https://api.thingspeak.com/channels/$channelId/fields/$fieldId.json", [
+            'api_key' => $apiKey,
+        ]);
+
+        $data = $response->json();
+
+        // Mendapatkan waktu dari entri terbaru
+        $latestEntry = end($data['feeds']);
+        $latestData = intval($latestEntry["field$fieldId"]);
+        $latestEntryTime = Carbon::parse($latestEntry['created_at']);
+        $latestTimeDifference = $latestEntryTime->diffForHumans();
+
+        return response()->json([
+            'data' => $latestData,
+            'time' => $latestTimeDifference,
+        ]);
     }
 
     public function scan_process(Request $request)
@@ -57,7 +83,7 @@ class ProsesController extends Controller
         try {
             $apiKey = 'K88428096188957';
             $client = new Client();
-    
+
             $response = $client->request('POST', 'https://api.ocr.space/parse/image', [
                 'headers' => [
                     'apikey' => $apiKey,
@@ -69,22 +95,21 @@ class ProsesController extends Controller
                     ],
                 ],
             ]);
-    
+
             $ocrResult = json_decode($response->getBody(), true);
-    
+
             // Ambil teks hasil OCR dari response OCR.space
             $resultText = $ocrResult['ParsedResults'][0]['ParsedText'] ?? 'No text found';
-    
+
             // Hapus spasi dari teks
             $resultTextWithoutSpaces = str_replace(' ', '', $resultText);
-    
+
             return $resultTextWithoutSpaces;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    
     public function send_data(Request $request)
     {
         $request->validate([
@@ -93,18 +118,18 @@ class ProsesController extends Controller
             'beban_kosong' => 'required',
             'beban_max' => 'required',
             'jenis_muatan' => 'required',
-            'beban_muatan' => 'required',
+            'beban_seluruh' => 'required',
         ]);
-    
-        $beban_seluruh = $request->beban_muatan + $request->beban_kosong;
-    
+
+        $beban_muatan = $request->beban_seluruh - $request->beban_kosong;
+
         $muatan = new Muatan([
             'jenis_muatan' => $request->jenis_muatan,
-            'berat_muatan' => $request->beban_muatan,
-            'beban_seluruh' => $beban_seluruh,
+            'berat_muatan' => $beban_muatan,
+            'beban_seluruh' => $request->beban_seluruh,
         ]);
         $muatan->save();
-        
+
         $truck = new Truck([
             'plat_nomor' => $request->plat_nomor,
             'jenis_truck' => $request->jenis_truck,
@@ -114,8 +139,8 @@ class ProsesController extends Controller
             'id_user' => Auth::user()->id_user,
         ]);
         $truck->save();
-    
+
         return back()->with('success', 'Data sent successfully !');
     }
-    
+
 }

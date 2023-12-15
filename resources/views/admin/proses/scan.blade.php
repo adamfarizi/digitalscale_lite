@@ -300,15 +300,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-icon-default-company">Load Weight</label>
-                                    <div class="col-sm-12">
+                                <div class="row mb-3">
+                                    <label class="form-label" for="basic-icon-default-company">Total Weight</label>
+                                    <div class="col">
                                         <div class="input-group input-group-merge">
-                                            <span id="beban_kosong" class="input-group-text">kg</span>
-                                            <input type="number" id="beban_muatan" class="form-control"
-                                                placeholder="Enter truck playload" aria-label=""
-                                                aria-describedby="beban_muatan" name="beban_muatan" />
+                                            <span id="beban_seluruh" class="input-group-text">kg</span>
+                                            <input type="number" id="latestData" class="form-control"
+                                            placeholder="Enter truck playload" aria-label=""
+                                            aria-describedby="beban_seluruh" name="beban_seluruh" 
+                                            value=""/>
                                         </div>
+                                    </div>
+                                    <div class="col px-0">
+                                        <p class="py-2">Scan at : <span id="latestTimeDifference"></span></p>
+                                    </div>
+                                    <div class="col-4">
+                                        <a type="button" id="reloadButton" class="btn btn-primary text-white w-100">Scan Weight</a>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Send Data</button>
@@ -350,5 +357,26 @@
                 alert("Ambil gambar terlebih dahulu sebelum melakukan scan!");
             }
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#reloadButton').on('click', function(e) {
+                e.preventDefault(); // Mencegah tautan untuk mengarahkan ke URL langsung
+
+                $.ajax({
+                    url: '/proses/weight', // Ganti dengan path yang sesuai
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        // Menampilkan data di elemen HTML
+                        $('#latestData').val(response.data);
+                        $('#latestTimeDifference').text(response.time);
+                    },
+                    error: function(error) {
+                        console.error('Failed to fetch data:', error);
+                    }
+                });
+            });
+        });
     </script>
 @endsection

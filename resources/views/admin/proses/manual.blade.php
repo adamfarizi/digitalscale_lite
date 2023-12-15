@@ -251,7 +251,7 @@
                                         <span id="beban_kosong" class="input-group-text">kg</span>
                                         <input type="number" id="beban_max" class="form-control"
                                             placeholder="Enter truck max load" aria-label=""
-                                            aria-describedby="beban_max" name="beban_max" />
+                                            aria-describedby="beban_max" name="beban_max"/>
                                     </div>
                                 </div>
                             </div>
@@ -261,29 +261,37 @@
                                     <div class="input-group input-group-merge">
                                         <span id="jenis_muatan" class="input-group-text"><i
                                             class="bx bx-list-check"></i></span>
-                                        <select class="form-select" id="jenis_muatan" name="jenis_muatan">
-                                            <option selected>Haven't Chosen Yet</option>
-                                            <option value="Batu Bara">Batu Bara</option>
-                                            <option value="Biji Besi">Biji Besi</option>
-                                            <option value="Biji Emas">Biji Emas</option>
-                                        </select>
+                                            <select class="form-select" id="jenis_muatan" name="jenis_muatan">
+                                                <option selected>Haven't Chosen Yet</option>
+                                                <option value="Batu Bara">Batu Bara</option>
+                                                <option value="Biji Besi">Biji Besi</option>
+                                                <option value="Biji Emas">Biji Emas</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Load Weight</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="beban_kosong" class="input-group-text">kg</span>
-                                        <input type="number" id="beban_muatan" class="form-control"
+                                <div class="row mb-3">
+                                    <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Total Weight</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group input-group-merge">
+                                            <span id="beban_seluruh" class="input-group-text">kg</span>
+                                            <input type="number" id="latestData" class="form-control"
                                             placeholder="Enter truck playload" aria-label=""
-                                            aria-describedby="beban_muatan" name="beban_muatan" />
+                                            aria-describedby="beban_seluruh" name="beban_seluruh" 
+                                            value=""/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p class="py-2">Scan at : <span id="latestTimeDifference"></span></p>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a href="{{ url('/proses/weight') }}" type="button" id="reloadButton" class="btn btn-primary text-white w-100">Scan Weight</a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-5">
-                                <div class="col">
-                                    <button type="submit" class="btn btn-primary w-100">Send Data</button>
+                                <div class="row mt-5">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary w-100">Send Data</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -292,4 +300,27 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('#reloadButton').on('click', function(e) {
+                e.preventDefault(); // Mencegah tautan untuk mengarahkan ke URL langsung
+
+                $.ajax({
+                    url: '/proses/weight', // Ganti dengan path yang sesuai
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        // Menampilkan data di elemen HTML
+                        $('#latestData').val(response.data);
+                        $('#latestTimeDifference').text(response.time);
+                    },
+                    error: function(error) {
+                        console.error('Failed to fetch data:', error);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

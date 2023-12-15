@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/proses/scan', [ProsesController::class,'index_scan']);
     Route::post('/proses/scan', [ProsesController::class,'scan_process']);
+    Route::get('/proses/weight', [ProsesController::class,'weight_scan']);
     Route::get('/proses/manual', [ProsesController::class,'index_manual']);
     Route::post('/proses/send', [ProsesController::class,'send_data']);
     
