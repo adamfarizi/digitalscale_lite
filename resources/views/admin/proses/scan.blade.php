@@ -212,8 +212,8 @@
                             <div class="rounded" style="background-color: #dee2e6;">
                                 <div class="w-100" id="my_camera"></div>
                             </div>
-                            <div class="rounded mt-3" style="background-color: #dee2e6;">
-                                <div class="w-100 h-100" id="results"></div>
+                            <div class="rounded mt-3"  id="cropper-container" style="overflow: hidden; background-color: #dee2e6; display: none;">
+                                <img id="cropper-image" src="" class="w-100 h-100">
                             </div>
                             <input type="hidden" name="image" id="image-tag" class="image-tag">
                             <div>
@@ -331,7 +331,11 @@
     </div>
 @endsection
 @section('js')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
     <script language="JavaScript">
+        let cropper;
+
         Webcam.set({
             width: 490,
             height: 350,
@@ -343,14 +347,33 @@
 
         function takeSnapshot() {
             Webcam.snap(function(data_uri) {
-                $("#image-tag").val(data_uri);
-                document.getElementById('results').innerHTML = '<img src="' + data_uri + '"/>';
+                if (data_uri) {
+                    $("#cropper-container").show();
+
+                    $("#image-tag").val(data_uri);
+                    $("#cropper-image").attr("src", data_uri);
+
+                    // Inisialisasi Cropper.js
+                    cropper = new Cropper(document.getElementById('cropper-image'), {
+                        aspectRatio: 3, // Sesuaikan sesuai kebutuhan
+                        viewMode: 1,
+                        crop: function(e) {
+                            // Dapatkan data URI setelah cropping
+                            let croppedDataUri = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                            $("#image-tag").val(croppedDataUri);
+                        }
+                    });
+                } else {
+                    $("#cropper-container").hide();
+                }
             });
         }
 
         function scan() {
             // Validasi apakah gambar telah diambil sebelum mengirim formulir
             if ($("#image-tag").val()) {
+                // Hentikan cropper sebelum mengirim formulir
+                cropper.destroy();
                 // Submit formulir scan
                 $("#scanForm").submit();
             } else {
